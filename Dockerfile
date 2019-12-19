@@ -44,6 +44,11 @@ RUN ln -s /usr/bin/php74 /usr/bin/php && \
 
 RUN yum -y install supervisor
 
+ENV COMPOSER_ALLOW_SUPERUSER=1
+
+RUN curl -sS https://getcomposer.org/installer | php -- \
+--install-dir=/usr/bin --filename=composer && chmod +x /usr/bin/composer 
+
 RUN sed -i "s,listen = 127.0.0.1:9000,listen = 9000,g" /etc/opt/remi/php74/php-fpm.d/www.conf && \
     sed -i "s,listen.allowed_clients = 127.0.0.1,;listen.allowed_clients = 127.0.0.1,g" /etc/opt/remi/php74/php-fpm.d/www.conf && \
     sed -i "s,daemonize = yes,daemonize = no,g" /etc/opt/remi/php74/php-fpm.conf
